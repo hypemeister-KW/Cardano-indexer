@@ -1,0 +1,24 @@
+{
+  "name": "backend-engineer-test",
+  "module": "index.ts",
+  "type": "module",
+  "scripts": {
+    "start": "bun src/index.ts",
+    "run-docker": "docker-compose up -d --build"
+  },
+  "devDependencies": {
+    "@types/bun": "latest",
+    "@types/express": "^5.0.5",
+    "@types/pg": "^8.11.8"
+  },
+  "peerDependencies": {
+    "typescript": "^5.0.0"
+  },
+  "dependencies": {
+    "@blockfrost/blockfrost-js": "^6.0.0",
+    "dotenv": "^17.2.3",
+    "express": "^5.1.0",
+    "fastify": "^4.28.1",
+    "pg": "^8.12.0"
+  }
+}
