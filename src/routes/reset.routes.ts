@@ -39,7 +39,7 @@ export async function registerResetRoutes(fastify: FastifyInstance) {
       if (shouldClearData) {
         await clearAllTransactions(pool);
         await clearAllAddresses(pool);
-        console.log('✅ Cleared all transactions and addresses');
+        console.log('Cleared all transactions and addresses');
       }
 
       await resetSyncState(pool, blockNum);
