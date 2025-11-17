@@ -19,7 +19,7 @@ async function bootstrap() {
   const blockfrost = await createBlockfrostClient();
 
   await createTables(pool);
-  await resetSyncState(pool, 10000000);
+  await resetSyncState(pool, parseInt(process.env.START_BLOCK || '10000000'));
 
   (fastify as any).pool = pool;
 

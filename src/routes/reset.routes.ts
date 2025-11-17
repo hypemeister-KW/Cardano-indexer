@@ -7,7 +7,8 @@ export async function registerResetRoutes(fastify: FastifyInstance) {
   fastify.post('/reset', async (request, reply) => {
     const pool = (fastify as any).pool;
     const body = request.body as { block?: number; clearData?: boolean } || {};
-    const { block = 10000000, clearData = false } = body;
+    const { clearData = false } = body;
+    const block = parseInt(process.env.START_BLOCK || '10000000', 10);
 
     try {
       if (clearData) {

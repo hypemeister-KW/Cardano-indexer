@@ -6,12 +6,13 @@ import { saveTransaction } from '../database/repositories/transactions.repositor
 export async function syncBlockchain(pool: Pool, blockfrost: any): Promise<void> {
   try {
     let lastSyncedBlock = await getLastSyncedBlock(pool);
+    const startBlock = parseInt(process.env.START_BLOCK || '10000000', 10);
 
-    // Force reset to 10000000 if current block is less than 10000000
-    if (lastSyncedBlock < 10000000) {
-      console.log(`Current block ${lastSyncedBlock} is less than 10000000, resetting to 10000000`);
-      await resetSyncState(pool, 10000000);
-      lastSyncedBlock = 10000000;
+    
+    if (lastSyncedBlock < startBlock) {
+      console.log(`Current block ${lastSyncedBlock}`);
+      await resetSyncState(pool, startBlock);
+      lastSyncedBlock = startBlock;
     }
 
     const latestBlock = await blockfrost.blocksLatest();
