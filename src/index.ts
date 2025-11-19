@@ -8,7 +8,7 @@ import { registerHealthRoutes } from './routes/health.routes';
 import { registerResetRoutes } from './routes/reset.routes';
 import { registerAddressesRoutes } from './routes/addresses.routes';
 import { registerTransactionsRoutes } from './routes/transactions.routes';
-//import { registerRollbackRoutes } from './routes/rollback.routes';
+
 
 const fastify = Fastify({ logger: true });
 
