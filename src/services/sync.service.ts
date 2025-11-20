@@ -26,7 +26,7 @@ export async function syncBlockchain(pool: Pool, blockfrost: any): Promise<void>
 
     for (let blockHeight = lastSyncedBlock + 1; blockHeight <= endBlock; blockHeight++) {
       if (blockHeight > syncToBlock) {
-        console.log(`Syncing to block ${syncToBlock}`);
+        console.log(`Syncing to block ${syncToBlock} service done ;)`);
         break;
       }
       try {
