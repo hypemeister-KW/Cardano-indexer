@@ -8,7 +8,7 @@ export async function syncBlockchain(pool: Pool, blockfrost: any): Promise<void>
     let lastSyncedBlock = await getLastSyncedBlock(pool);
     const startBlock = parseInt(process.env.START_BLOCK || '10000000', 10);
 
-    
+
     if (lastSyncedBlock < startBlock) {
       console.log(`Current block ${lastSyncedBlock}`);
       await resetSyncState(pool, startBlock);
@@ -22,8 +22,13 @@ export async function syncBlockchain(pool: Pool, blockfrost: any): Promise<void>
 
     const batchSize = 10;
     const endBlock = Math.min(lastSyncedBlock + batchSize, latestBlockHeight);
+    const syncToBlock = parseInt(process.env.START_BLOCK || '10000000', 10) + 20;
 
     for (let blockHeight = lastSyncedBlock + 1; blockHeight <= endBlock; blockHeight++) {
+      if (blockHeight > syncToBlock) {
+        console.log(`Syncing to block ${syncToBlock}`);
+        break;
+      }
       try {
         const block = await blockfrost.blocks(blockHeight.toString());
         let txHashes = await blockfrost.blocksTxs(block.hash);
