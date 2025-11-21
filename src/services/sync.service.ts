@@ -3,11 +3,21 @@ import type { Transaction } from '../types';
 import { getLastSyncedBlock, updateLastSyncedBlock, resetSyncState } from '../database/repositories/sync-state.repository';
 import { saveTransaction } from '../database/repositories/transactions.repository';
 
+let syncCompleted = false;
+
 export async function syncBlockchain(pool: Pool, blockfrost: any): Promise<void> {
   try {
     let lastSyncedBlock = await getLastSyncedBlock(pool);
     const startBlock = parseInt(process.env.START_BLOCK || '10000000', 10);
+    const syncToBlock = startBlock + 20;
 
+    if (lastSyncedBlock >= syncToBlock) {
+      if (!syncCompleted) {
+        console.log(`Sync to block ${syncToBlock} service done ;)`);
+        syncCompleted = true;
+      }
+      return;
+    }
 
     if (lastSyncedBlock < startBlock) {
       console.log(`Current block ${lastSyncedBlock}`);
@@ -22,12 +32,14 @@ export async function syncBlockchain(pool: Pool, blockfrost: any): Promise<void>
 
     const batchSize = 10;
     const endBlock = Math.min(lastSyncedBlock + batchSize, latestBlockHeight);
-    const syncToBlock = parseInt(process.env.START_BLOCK || '10000000', 10) + 20;
 
     for (let blockHeight = lastSyncedBlock + 1; blockHeight <= endBlock; blockHeight++) {
       if (blockHeight > syncToBlock) {
-        console.log(`Syncing to block ${syncToBlock} service done ;)`);
-        break;
+        if (!syncCompleted) {
+          console.log(`Syncing to block ${syncToBlock} service done ;)`);
+          syncCompleted = true;
+        }
+        return;
       }
       try {
         const block = await blockfrost.blocks(blockHeight.toString());
