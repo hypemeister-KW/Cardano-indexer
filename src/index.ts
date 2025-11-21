@@ -10,7 +10,10 @@ import { registerAddressesRoutes } from './routes/addresses.routes';
 import { registerTransactionsRoutes } from './routes/transactions.routes';
 
 
-const fastify = Fastify({ logger: true });
+const fastify = Fastify({
+  logger: true,
+  maxParamLength: 200 // increase limit for long addresses  Cardano
+});
 
 async function bootstrap() {
   console.log('🚀 Bootstrapping...');

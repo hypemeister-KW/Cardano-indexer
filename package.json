@@ -4,7 +4,11 @@
   "type": "module",
   "scripts": {
     "start": "bun src/index.ts",
-    "run-docker": "docker-compose up -d --build"
+    "run-docker": "docker-compose up -d --build",
+    "test": "bun test spec/",
+    "test:api": "bun test spec/api.test.ts",
+    "test:watch": "bun test --watch spec/",
+    "test:coverage": "bun test --coverage spec/"
   },
   "devDependencies": {
     "@types/bun": "latest",
