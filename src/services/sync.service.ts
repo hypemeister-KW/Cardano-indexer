@@ -9,7 +9,8 @@ export async function syncBlockchain(pool: Pool, blockfrost: any): Promise<void>
   try {
     let lastSyncedBlock = await getLastSyncedBlock(pool);
     const startBlock = parseInt(process.env.START_BLOCK || '10000000', 10);
-    const syncToBlock = startBlock + 20;
+
+    const syncToBlock = parseInt(process.env.END_BLOCK || (startBlock + 20).toString(), 10);
 
     if (lastSyncedBlock >= syncToBlock) {
       if (!syncCompleted) {
