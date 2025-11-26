@@ -1,13 +1,13 @@
 import { Pool } from 'pg';
 
 export async function createTables(pool: Pool): Promise<void> {
-  await pool.query(`
+  /*await pool.query(`
     CREATE TABLE IF NOT EXISTS users(
        id TEXT PRIMARY KEY,
        name TEXT NOT NULL,
        email TEXT NOT NULL
     );
-  `);
+  `);*/
 
   await pool.query(`
     CREATE TABLE IF NOT EXISTS addresses (
