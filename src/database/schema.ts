@@ -1,6 +1,7 @@
 import { Pool } from 'pg';
 
 export async function createTables(pool: Pool): Promise<void> {
+ // 26.11.2025 - disabled users table because it's not used in the project yet
   /*await pool.query(`
     CREATE TABLE IF NOT EXISTS users(
        id TEXT PRIMARY KEY,
