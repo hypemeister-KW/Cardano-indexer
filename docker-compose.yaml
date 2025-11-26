@@ -1,6 +1,5 @@
-
-
 services:
+
   db:
     image: postgres:15
     environment:
@@ -27,6 +26,8 @@ services:
       BLOCKFROST_PROJECT_ID: ${BLOCKFROST_PROJECT_ID}
       PORT: ${PORT:-3000}
       HOST: ${HOST:-0.0.0.0}
+      START_BLOCK: ${START_BLOCK:-10000000}
+      END_BLOCK: ${END_BLOCK:-10000500}
     ports:
       - "${PORT:-3000}:${PORT:-3000}"
 

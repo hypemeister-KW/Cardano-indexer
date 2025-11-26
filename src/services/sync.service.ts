@@ -9,12 +9,11 @@ export async function syncBlockchain(pool: Pool, blockfrost: any): Promise<void>
   try {
     let lastSyncedBlock = await getLastSyncedBlock(pool);
     const startBlock = parseInt(process.env.START_BLOCK || '10000000', 10);
+const endBlock = parseInt(process.env.END_BLOCK || (startBlock + 20).toString(), 10);
 
-    const syncToBlock = parseInt(process.env.END_BLOCK || (startBlock + 20).toString(), 10);
-
-    if (lastSyncedBlock >= syncToBlock) {
+    if (lastSyncedBlock >= endBlock) {
       if (!syncCompleted) {
-        console.log(`Sync to block ${syncToBlock} service done ;)`);
+        console.log(`Sync to block ${endBlock} service done ;)`);
         syncCompleted = true;
       }
       return;
@@ -29,15 +28,15 @@ export async function syncBlockchain(pool: Pool, blockfrost: any): Promise<void>
     const latestBlock = await blockfrost.blocksLatest();
     const latestBlockHeight = latestBlock.height || 0;
 
-    console.log(`Syncing from block ${lastSyncedBlock} to ${latestBlockHeight}`);
+    console.log(`Syncing from block ${lastSyncedBlock} to ${Math.min(endBlock, latestBlockHeight)}`);
 
     const batchSize = 10;
-    const endBlock = Math.min(lastSyncedBlock + batchSize, latestBlockHeight);
+    const endBlockBatch = Math.min(lastSyncedBlock + batchSize, latestBlockHeight, endBlock);
 
-    for (let blockHeight = lastSyncedBlock + 1; blockHeight <= endBlock; blockHeight++) {
-      if (blockHeight > syncToBlock) {
+    for (let blockHeight = lastSyncedBlock + 1; blockHeight <= endBlockBatch; blockHeight++) {
+      if (blockHeight > endBlock) {
         if (!syncCompleted) {
-          console.log(`Syncing to block ${syncToBlock} service done ;)`);
+          console.log(`Syncing to block ${endBlock} service done ;)`);
           syncCompleted = true;
         }
         return;
@@ -141,4 +140,3 @@ export async function syncBlockchain(pool: Pool, blockfrost: any): Promise<void>
     console.error('Sync error:', error);
   }
 }
-

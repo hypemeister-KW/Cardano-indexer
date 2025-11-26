@@ -8,7 +8,7 @@ import { registerHealthRoutes } from './routes/health.routes';
 import { registerResetRoutes } from './routes/reset.routes';
 import { registerAddressesRoutes } from './routes/addresses.routes';
 import { registerTransactionsRoutes } from './routes/transactions.routes';
-
+import { getCLIInput } from './cli';
 
 const fastify = Fastify({
   logger: true,
@@ -18,6 +18,7 @@ const fastify = Fastify({
 async function bootstrap() {
   console.log('🚀 Bootstrapping...');
 
+  await getCLIInput();
   const pool = createDatabasePool();
   const blockfrost = await createBlockfrostClient();
 
